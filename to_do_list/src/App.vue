@@ -3,7 +3,7 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link>
   </nav>
-    <form>
+    <form v-if="!isLogged">
       <input v-model="username" type="text" placeholder="Username"/>
       <input v-model="email" type="email" placeholder="Email"/>
       <input v-model="password" type="password" placeholder="Password"/>
@@ -21,6 +21,9 @@
         <li v-for="(profile, index) in this.result" :key="index">{{ profile.username }}</li>
       </ul>
       <p v-if="this.result.length === 0 && !searchPerformed">No results</p>
+    </div>
+    <div id="logout">
+    <button @click='logout' v-if="isLogged">Log out</button>
     </div>
 </template>
 
@@ -70,6 +73,13 @@ input, button {
   transform: translate(-50%);
 }
 
+#logout {
+    position: absolute;
+    top: 42.5%;
+    left: 50%;
+    transform: translate(-50%);
+}
+
 </style>
 
 <script>
@@ -81,12 +91,18 @@ export default {
       profiles: profiles,
       result: [],
       searchPerformed: false,
+      username: '',
+      password: '',
+      rePassword: '',
+      email: '',
+      search: '',
       newProfile: {
         id: null,
         username: '',
         password: '',
         email: ''
-      }
+      },
+      isLogged: localStorage.getItem('id') !== null
     }
   },
   methods: {
@@ -109,7 +125,6 @@ export default {
       this.profiles.forEach(profile => {
         if (profile.username === this.username) {
           alert('Already profile with that username!')
-          return 0
         }
       })
 
@@ -120,6 +135,8 @@ export default {
         this.newProfile.email = this.email
 
         this.profiles.push(this.newProfile)
+
+        localStorage.setItem('id', this.newProfile.id)
 
         this.newProfile = {
           id: null,
@@ -134,10 +151,17 @@ export default {
         this.password = ''
         this.rePassword = ''
         this.email = ''
+
+        this.isLogged = true
+
         alert('Profile is created')
       } else {
         alert('Password are not the same')
       }
+    },
+    logout () {
+      localStorage.clear()
+      this.isLogged = false
     }
   }
 }
