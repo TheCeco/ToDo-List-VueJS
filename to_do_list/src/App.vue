@@ -1,30 +1,10 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/about">About</router-link> |
+    <router-link to="/register">Register</router-link>
   </nav>
-    <form v-if="!isLogged">
-      <input v-model="username" type="text" placeholder="Username"/>
-      <input v-model="email" type="email" placeholder="Email"/>
-      <input v-model="password" type="password" placeholder="Password"/>
-      <input v-model="rePassword" type="password" placeholder="Repeat Password"/>
-      <button
-      @click.prevent.stop="registerProfile"
-      @keyup.enter.prevent.stop="registerProfile">
-      Register
-      </button>
-    </form>
-    <div id="search">
-      <input v-model="search" @input="searchProfile">
-      <button @click="searchProfile">Search</button>
-      <ul>
-        <li v-for="(profile, index) in this.result" :key="index">{{ profile.username }}</li>
-      </ul>
-      <p v-if="this.result.length === 0 && !searchPerformed">No results</p>
-    </div>
-    <div id="logout">
-    <button @click='logout' v-if="isLogged">Log out</button>
-    </div>
+    <router-view></router-view>
 </template>
 
 <style>
