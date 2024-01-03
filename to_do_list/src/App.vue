@@ -1,8 +1,11 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/register">Register</router-link>
+    <router-link to="" @click='logout' v-if="isLogged" :isLogged="isLogged">Log out</router-link>
+    <div v-else id="loginRegister">
+    <router-link to="/register" :isLogged="isLogged">Register</router-link> |
+    <router-link to="/login">Login</router-link>
+    </div>
   </nav>
     <router-view></router-view>
 </template>
@@ -48,7 +51,6 @@ input, button {
 
 #search {
   position: absolute;
-  top: 50%;
   left: 50%;
   transform: translate(-50%);
 }
@@ -60,90 +62,24 @@ input, button {
     transform: translate(-50%);
 }
 
+#loginRegister {
+  display: inline;
+}
+
 </style>
 
 <script>
-import profiles from './profiles.json'
-
 export default {
   data () {
     return {
-      profiles: profiles,
-      result: [],
-      searchPerformed: false,
-      username: '',
-      password: '',
-      rePassword: '',
-      email: '',
-      search: '',
-      newProfile: {
-        id: null,
-        username: '',
-        password: '',
-        email: ''
-      },
       isLogged: localStorage.getItem('id') !== null
     }
   },
   methods: {
-    searchProfile () {
-      this.result = []
-
-      this.profiles.forEach(profile => {
-        if (profile.username.includes(this.search)) {
-          this.result.push(profile)
-        }
-      })
-
-      this.searchPerformed = true
-
-      if (this.result.length === 0) {
-        this.searchPerformed = false
-      }
-    },
-    registerProfile () {
-      this.profiles.forEach(profile => {
-        if (profile.username === this.username) {
-          alert('Already profile with that username!')
-        }
-      })
-
-      if (this.password === this.rePassword) {
-        this.newProfile.id = this.profiles.length + 1
-        this.newProfile.username = this.username
-        this.newProfile.password = this.password
-        this.newProfile.email = this.email
-
-        this.profiles.push(this.newProfile)
-
-        localStorage.setItem('id', this.newProfile.id)
-
-        this.newProfile = {
-          id: null,
-          username: '',
-          password: '',
-          email: ''
-        }
-
-        console.log(this.profiles)
-
-        this.username = ''
-        this.password = ''
-        this.rePassword = ''
-        this.email = ''
-
-        this.isLogged = true
-
-        alert('Profile is created')
-      } else {
-        alert('Password are not the same')
-      }
-    },
     logout () {
       localStorage.clear()
       this.isLogged = false
     }
   }
 }
-
 </script>

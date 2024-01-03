@@ -1,18 +1,48 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div id="search">
+      <input v-model="search" @input="searchProfile">
+      <p v-if="this.search.length === 0 || !searchPerformed">No results</p>
+      <ul v-else>
+        <li
+        v-for="(profile) in this.result"
+        :key="profile.id">
+        {{ profile.username }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import profiles from '@/profiles.json'
 
 export default {
   name: 'HomeView',
-  components: {
-    HelloWorld
+  data () {
+    return {
+      profiles: profiles,
+      result: [],
+      search: '',
+      searchPerformed: false
+    }
+  },
+  methods: {
+    searchProfile () {
+      this.result = []
+
+      this.profiles.forEach(profile => {
+        if (profile.username.includes(this.search)) {
+          this.result.push(profile)
+        }
+      })
+
+      this.searchPerformed = true
+
+      if (this.result.length === 0) {
+        this.searchPerformed = false
+      }
+    }
   }
 }
 </script>
