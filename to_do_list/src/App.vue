@@ -1,9 +1,7 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to=""
-    @click="logout"
-    v-if="isLogged">
+    <router-link to="" @click="logout" v-if="isLogged">
     Log out
     </router-link>
     <div v-else id="loginRegister">
@@ -112,21 +110,20 @@ export default {
     }
   },
   methods: {
-    loggedProfile () {
-      profiles.forEach(profile => {
-        if (profile.isLogged) {
-          return true
-        } else {
-          return false
-        }
-      })
+    loggedProfile() {
+      profiles = JSON.parse(localStorage.getItem('profiles')) === null ? profiles : JSON.parse(localStorage.getItem('profiles'))
+
+      return profiles.some(profile => profile.isLogged);
     },
     logout () {
-      profiles = JSON.parse(localStorage.getItem('profiles'))
+      profiles = JSON.parse(localStorage.getItem('profiles')) === null ? profiles : JSON.parse(localStorage.getItem('profiles'))
 
       profiles.forEach(profile => {
         profile.isLogged = false
       })
+
+      profiles = JSON.stringify(profiles)
+      localStorage.setItem('profiles', profiles)
 
       this.isLogged = false
     }
