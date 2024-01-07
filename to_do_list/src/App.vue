@@ -1,13 +1,17 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="" @click='logout' v-if="isLogged" :isLogged="isLogged">Log out</router-link>
+    <router-link to=""
+    @click="logout"
+    v-if="isLogged">
+    Log out
+    </router-link>
     <div v-else id="loginRegister">
-    <router-link to="/register" :isLogged="isLogged">Register</router-link> |
-    <router-link to="/login">Login</router-link>
+      <router-link to="/register">Register</router-link> |
+      <router-link to="/login">Login</router-link>
     </div>
   </nav>
-    <router-view></router-view>
+  <router-view></router-view>
 </template>
 
 <style>
@@ -41,10 +45,11 @@ form {
   width: 50%;
   position: absolute;
   left: 50%;
-  transform: translate(-50%)
+  transform: translate(-50%);
 }
 
-input, button {
+input,
+button {
   padding: 5px;
   margin: 5px;
 }
@@ -56,28 +61,73 @@ input, button {
 }
 
 #logout {
-    position: absolute;
-    top: 42.5%;
-    left: 50%;
-    transform: translate(-50%);
+  position: absolute;
+  top: 42.5%;
+  left: 50%;
+  transform: translate(-50%);
 }
 
 #loginRegister {
   display: inline;
 }
-
 </style>
 
 <script>
+import profiles from '@/profiles.json'
+
 export default {
+  created () {
+    console.log('created')
+    if (localStorage.getItem('profiles') === null) {
+      profiles.forEach((profile) => {
+        const profileData = {
+          id: profile.id,
+          username: profile.username,
+          email: profile.email,
+          password: profile.password,
+          isLogged: profile.isLogged
+        }
+        this.storedData.push(profileData)
+      })
+
+      console.log(this.storedData)
+
+      this.storedData = JSON.stringify(this.storedData)
+
+      localStorage.setItem('profiles', this.storedData)
+    }
+    profiles = JSON.parse(localStorage.getItem('profiles'))
+    console.log(profiles)
+  },
+  mounted () {
+    console.log('mounted')
+  },
+  updated () {
+    console.log('updated')
+  },
   data () {
     return {
-      isLogged: localStorage.getItem('id') !== null
+      isLogged: this.loggedProfile(),
+      storedData: []
     }
   },
   methods: {
+    loggedProfile () {
+      profiles.forEach(profile => {
+        if (profile.isLogged) {
+          return true
+        } else {
+          return false
+        }
+      })
+    },
     logout () {
-      localStorage.clear()
+      profiles = JSON.parse(localStorage.getItem('profiles'))
+
+      profiles.forEach(profile => {
+        profile.isLogged = false
+      })
+
       this.isLogged = false
     }
   }

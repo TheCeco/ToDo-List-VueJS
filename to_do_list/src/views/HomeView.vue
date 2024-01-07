@@ -1,13 +1,11 @@
 <template>
   <div class="home">
     <div id="search">
-      <input v-model="search" @input="searchProfile">
+      <input v-model="search" @input="searchProfile" />
       <p v-if="this.search.length === 0 || !searchPerformed">No results</p>
       <ul v-else>
-        <li
-        v-for="(profile) in this.result"
-        :key="profile.id">
-        {{ profile.username }}
+        <li v-for="profile in this.result" :key="profile.id">
+          {{ profile.username }}
         </li>
       </ul>
     </div>
@@ -21,7 +19,7 @@ export default {
   name: 'HomeView',
   data () {
     return {
-      profiles: profiles,
+      storedData: [],
       result: [],
       search: '',
       searchPerformed: false
@@ -29,9 +27,11 @@ export default {
   },
   methods: {
     searchProfile () {
+      profiles = JSON.parse(localStorage.getItem('profiles'))
+
       this.result = []
 
-      this.profiles.forEach(profile => {
+      profiles.forEach((profile) => {
         if (profile.username.includes(this.search)) {
           this.result.push(profile)
         }
