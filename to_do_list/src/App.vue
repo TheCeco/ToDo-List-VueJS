@@ -75,7 +75,6 @@ import profiles from '@/profiles.json'
 
 export default {
   created () {
-    console.log('created')
     if (localStorage.getItem('profiles') === null) {
       profiles.forEach((profile) => {
         const profileData = {
@@ -88,20 +87,11 @@ export default {
         this.storedData.push(profileData)
       })
 
-      console.log(this.storedData)
-
       this.storedData = JSON.stringify(this.storedData)
 
       localStorage.setItem('profiles', this.storedData)
     }
     profiles = JSON.parse(localStorage.getItem('profiles'))
-    console.log(profiles)
-  },
-  mounted () {
-    console.log('mounted')
-  },
-  updated () {
-    console.log('updated')
   },
   data () {
     return {

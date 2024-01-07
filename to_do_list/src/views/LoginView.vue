@@ -7,8 +7,8 @@
       :placeholder="passwordPlaceholder"
     />
     <button
-      @click.prevent.stop="loginProfile"
-      @keyup.enter.prevent.stop="loginProfile"
+      @click="loginProfile"
+      @keyup.enter="loginProfile"
     >
       Login
     </button>
@@ -22,7 +22,6 @@ export default {
   name: "LoginView",
   data() {
     return {
-      profiles: profiles,
       username: "",
       password: "",
       usernamePlaceholder: "Username",
@@ -31,19 +30,24 @@ export default {
   },
   methods: {
     loginProfile() {
-      this.profiles.forEach((profile) => {
+      profiles = JSON.parse(localStorage.getItem('profiles'))
+
+      profiles.forEach((profile) => {
         if (profile.username === this.username) {
           if (profile.password === this.password) {
-            localStorage.setItem("user_id", profile.id);
+            profile.isLogged = true
+
+            profiles = JSON.stringify(profiles)
+            localStorage.setItem('profiles', profiles)
 
             this.isLogged = true;
 
             this.$router.push("/");
           } else {
-            alert("Wrong password!");
+            // console.log("Wrong password!");
           }
         } else {
-          alert("No such username!");
+          // console.log("No such username!");
         }
       });
     },

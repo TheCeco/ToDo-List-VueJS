@@ -75,7 +75,7 @@ export default {
         
         this.$router.push('/')
       } else {
-        alert('Password are not the same')
+        // alert('Password are not the same')
       }
     }
   }
