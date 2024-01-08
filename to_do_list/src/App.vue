@@ -52,21 +52,14 @@ button {
   margin: 5px;
 }
 
-#search {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%);
-}
-
-#logout {
-  position: absolute;
-  top: 42.5%;
-  left: 50%;
-  transform: translate(-50%);
-}
-
 #loginRegister {
   display: inline;
+}
+
+.home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
 

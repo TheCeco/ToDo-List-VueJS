@@ -1,11 +1,9 @@
 <template>
   <div class="home">
     <div id="search">
-      <input v-model="search" @input="searchProfile" />
-      <p v-if="this.search.length === 0 || !searchPerformed">No results</p>
-      <ul v-else>
-        <li v-for="profile in this.result" :key="profile.id">
-          {{ profile.username }}
+      <ul>
+        <li v-for="task in this.tasks" v-if="task.user_id === this.loggedProfile.id" :key="task.id">
+          {{ task.task_name }}
         </li>
       </ul>
     </div>
@@ -14,6 +12,7 @@
 
 <script>
 import profiles from '@/profiles.json'
+import tasks from '@/tasks.json'
 
 export default {
   name: 'HomeView',
@@ -22,10 +21,23 @@ export default {
       storedData: [],
       result: [],
       search: '',
-      searchPerformed: false
+      searchPerformed: false,
+      loggedProfile: this.getLoggedProfile(),
+      tasks: tasks
     }
   },
   methods: {
+    getLoggedProfile () {
+      profiles = JSON.parse(localStorage.getItem('profiles'))
+      this.loggedProfile = {}
+
+      profiles.forEach(profile => {
+        if (profile.isLogged) {
+          this.loggedProfile =  profile
+        }
+      })
+      return this.loggedProfile
+    },
     searchProfile () {
       profiles = JSON.parse(localStorage.getItem('profiles'))
 
