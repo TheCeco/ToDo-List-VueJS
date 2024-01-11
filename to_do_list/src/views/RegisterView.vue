@@ -12,7 +12,7 @@
       type="password"
       :placeholder="rePasswordPlaceholder"
     />
-    <button @click="registerProfile" @keyup.enter="registerProfile">
+    <button @click="registerProfile">
       Register
     </button>
   </form>
@@ -24,6 +24,13 @@ import { Profile } from '@/Profile.js'
 
 export default {
   name: 'RegisterView',
+  created () {
+    profiles = JSON.parse(localStorage.getItem('profiles'))
+    
+    if (profiles.some(profile => profile.isLogged)) {
+      this.$router.push('/')
+    }
+  },
   data () {
     return {
       username: '',
@@ -72,10 +79,6 @@ export default {
 
         this.storedData = JSON.stringify(this.storedData)
         localStorage.setItem('profiles', this.storedData)
-        
-        this.$router.push('/')
-      } else {
-        // alert('Password are not the same')
       }
     }
   }

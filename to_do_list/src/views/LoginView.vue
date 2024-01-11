@@ -6,10 +6,7 @@
       type="password"
       :placeholder="passwordPlaceholder"
     />
-    <button
-      @click="loginProfile"
-      @keyup.enter="loginProfile"
-    >
+    <button @click="loginProfile">
       Login
     </button>
   </form>
@@ -20,6 +17,13 @@ import profiles from "@/profiles.json";
 
 export default {
   name: "LoginView",
+  created () {
+    profiles = JSON.parse(localStorage.getItem('profiles'))
+    
+    if (profiles.some(profile => profile.isLogged)) {
+      this.$router.push('/')
+    }
+  },
   data() {
     return {
       username: "",
@@ -41,14 +45,8 @@ export default {
             localStorage.setItem('profiles', profiles)
 
             this.isLogged = true;
-
-            this.$router.push("/");
-          } else {
-            // console.log("Wrong password!");
-          }
-        } else {
-          // console.log("No such username!");
-        }
+          } 
+        } 
       });
     },
   },

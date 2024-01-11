@@ -1,14 +1,32 @@
 <template>
   <div class="home">
     <div id="search">
-      <ul>
-        <li v-for="task in this.tasks" v-if="task.user_id === this.loggedProfile.id" :key="task.id">
-          {{ task.task_name }}
-        </li>
-      </ul>
+      <table>
+        <tr>
+          <th>Task &num</th>
+          <th>Task Name</th>
+          <th>Description</th>
+        </tr>
+        <tr v-for="task in this.tasks" :key="task.id">
+          <td v-if="task.user_id === this.loggedProfile.id">{{task.id}}</td>
+          <td v-if="task.user_id === this.loggedProfile.id">{{task.task_name}}</td> 
+          <td v-if="task.user_id === this.loggedProfile.id">{{task.description}}</td>
+        </tr>
+      </table>
     </div>
   </div>
 </template>
+
+<style>
+table, th, td {
+  border: 1px solid black; 
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 15px;
+}
+</style>
 
 <script>
 import profiles from '@/profiles.json'
@@ -16,6 +34,13 @@ import tasks from '@/tasks.json'
 
 export default {
   name: 'HomeView',
+  created () {
+      profiles = JSON.parse(localStorage.getItem('profiles'))
+
+      if (!profiles.some(profile => profile.isLogged)) {
+        this.$router.push('/')
+      }
+  },
   data () {
     return {
       storedData: [],
@@ -23,7 +48,8 @@ export default {
       search: '',
       searchPerformed: false,
       loggedProfile: this.getLoggedProfile(),
-      tasks: tasks
+      tasks: tasks,
+      showForm: false
     }
   },
   methods: {
