@@ -1,13 +1,11 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="" @click="logout" v-if="isLogged">
-    Log out
-    </router-link>
-    <div v-else id="loginRegister">
-      <router-link to="/register">Register</router-link> |
-      <router-link to="/login">Login</router-link>
-    </div>
+    <router-link to="/add_task" v-if="isLogged">Add task</router-link>
+    <router-link to="/login" v-if="!isLogged">Login</router-link>
+    |
+    <router-link to="/register" v-if="!isLogged">Register</router-link>
+    <router-link to="" @click="logout" v-if="isLogged">Log out</router-link>
   </nav>
   <router-view></router-view>
 </template>
@@ -41,9 +39,8 @@ li {
 form {
   display: grid;
   width: 50%;
-  position: absolute;
   left: 50%;
-  transform: translate(-50%);
+  transform: translate(50%);
 }
 
 input,
@@ -64,52 +61,61 @@ button {
 </style>
 
 <script>
-import profiles from '@/profiles.json'
+import profiles from "@/profiles.json";
+import tasks from "@/tasks.json"
 
 export default {
-  created () {
-    if (localStorage.getItem('profiles') === null) {
+  created() {
+    if (JSON.parse(localStorage.getItem("data")) === null) {
       profiles.forEach((profile) => {
         const profileData = {
           id: profile.id,
           username: profile.username,
           email: profile.email,
           password: profile.password,
-          isLogged: profile.isLogged
-        }
-        this.storedData.push(profileData)
-      })
+          isLogged: profile.isLogged,
+        };
+        this.storedData[0].push(profileData);
+      });
 
-      this.storedData = JSON.stringify(this.storedData)
+      this.storedData = JSON.stringify(this.storedData);
 
-      localStorage.setItem('profiles', this.storedData)
+      localStorage.setItem("data", this.storedData);
     }
-    profiles = JSON.parse(localStorage.getItem('profiles'))
+    profiles = JSON.parse(localStorage.getItem("data"))[0];
   },
-  data () {
+  data() {
     return {
       isLogged: this.loggedProfile(),
-      storedData: []
-    }
+      storedData: [[], []]
+          
+    };
   },
   methods: {
     loggedProfile() {
-      profiles = JSON.parse(localStorage.getItem('profiles')) === null ? profiles : JSON.parse(localStorage.getItem('profiles'))
+      profiles =
+        JSON.parse(localStorage.getItem("data")) === null
+          ? profiles
+          : JSON.parse(localStorage.getItem("data"))[0];
 
-      return profiles.some(profile => profile.isLogged);
+      return profiles.some((profile) => profile.isLogged);
     },
-    logout () {
-      profiles = JSON.parse(localStorage.getItem('profiles')) === null ? profiles : JSON.parse(localStorage.getItem('profiles'))
+    logout() {
+      profiles =
+        JSON.parse(localStorage.getItem("data")) === null
+          ? profiles
+          : JSON.parse(localStorage.getItem("data"))[0];
 
-      profiles.forEach(profile => {
-        profile.isLogged = false
-      })
+      profiles.forEach((profile) => {
+        profile.isLogged = false;
+      });
+      profiles = JSON.stringify(profiles);
+      localStorage.setItem("profiles", profiles);
 
-      profiles = JSON.stringify(profiles)
-      localStorage.setItem('profiles', profiles)
+      this.isLogged = false;
 
-      this.isLogged = false
-    }
-  }
-}
+      console.log("logged out");
+    },
+  },
+};
 </script>
