@@ -35,7 +35,8 @@ import tasks from '@/tasks.json'
 export default {
   name: 'HomeView',
   created () {
-      profiles = JSON.parse(localStorage.getItem('profiles'))
+      let localStorageData = JSON.parse(localStorage.getItem('data'))
+      profiles = localStorageData[0]
 
       if (!profiles.some(profile => profile.isLogged)) {
         this.$router.push('/')
@@ -43,18 +44,16 @@ export default {
   },
   data () {
     return {
-      storedData: [],
-      result: [],
-      search: '',
-      searchPerformed: false,
       loggedProfile: this.getLoggedProfile(),
       tasks: tasks,
-      showForm: false
+      localStorageData: JSON.parse(localStorage.getItem('data'))
     }
   },
   methods: {
     getLoggedProfile () {
-      profiles = JSON.parse(localStorage.getItem('profiles'))
+      let localStorageData = JSON.parse(localStorage.getItem('data'))
+      profiles = localStorageData[0]
+      
       this.loggedProfile = {}
 
       profiles.forEach(profile => {
@@ -64,23 +63,6 @@ export default {
       })
       return this.loggedProfile
     },
-    searchProfile () {
-      profiles = JSON.parse(localStorage.getItem('profiles'))
-
-      this.result = []
-
-      profiles.forEach((profile) => {
-        if (profile.username.includes(this.search)) {
-          this.result.push(profile)
-        }
-      })
-
-      this.searchPerformed = true
-
-      if (this.result.length === 0) {
-        this.searchPerformed = false
-      }
-    }
   }
 }
 </script>

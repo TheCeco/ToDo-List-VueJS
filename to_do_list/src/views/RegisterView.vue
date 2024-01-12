@@ -12,7 +12,7 @@
       type="password"
       :placeholder="rePasswordPlaceholder"
     />
-    <button @click="registerProfile">
+    <button @click.prevent.stop="registerProfile">
       Register
     </button>
   </form>
@@ -25,7 +25,8 @@ import { Profile } from '@/Profile.js'
 export default {
   name: 'RegisterView',
   created () {
-    profiles = JSON.parse(localStorage.getItem('profiles'))
+    let localStorageData = JSON.parse(localStorage.getItem('data'))
+    profiles = localStorageData[0]
     
     if (profiles.some(profile => profile.isLogged)) {
       this.$router.push('/')
@@ -41,12 +42,12 @@ export default {
       emailPlaceholder: 'Email',
       passwordPlaceholder: 'Password',
       rePasswordPlaceholder: 'Repeat Password',
-      storedData: [],
     }
   },
   methods: {
-    async registerProfile () {
-      profiles = JSON.parse(localStorage.getItem('profiles'))
+    registerProfile () {
+      let localStorageData = JSON.parse(localStorage.getItem('data'))
+      profiles = localStorageData[0]
 
       profiles.forEach((profile) => {
         if (profile.username === this.username) {
@@ -64,21 +65,10 @@ export default {
         )
 
         profiles.push(profile)
-
-        profiles.forEach((profile) => {
-          const profileData = {
-            id: profile.id,
-            username: profile.username,
-            email: profile.email,
-            password: profile.password,
-            isLogged: profile.isLogged
-          }
-
-          this.storedData.push(profileData)
-        })
-
-        this.storedData = JSON.stringify(this.storedData)
-        localStorage.setItem('profiles', this.storedData)
+        
+        localStorageData[0] = profiles
+        localStorageData = JSON.stringify(localStorageData)
+        localStorage.setItem('data', localStorageData)
       }
     }
   }

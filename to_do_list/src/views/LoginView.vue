@@ -6,7 +6,7 @@
       type="password"
       :placeholder="passwordPlaceholder"
     />
-    <button @click="loginProfile">
+    <button @click.prevent.stop="loginProfile">
       Login
     </button>
   </form>
@@ -18,7 +18,8 @@ import profiles from "@/profiles.json";
 export default {
   name: "LoginView",
   created () {
-    profiles = JSON.parse(localStorage.getItem('profiles'))
+    let localStorageData = JSON.parse(localStorage.getItem('data'))
+    profiles = localStorageData[0]
     
     if (profiles.some(profile => profile.isLogged)) {
       this.$router.push('/')
@@ -34,15 +35,19 @@ export default {
   },
   methods: {
     loginProfile() {
-      profiles = JSON.parse(localStorage.getItem('profiles'))
+      let localStorageData = JSON.parse(localStorage.getItem('data'))
+      console.log(localStorageData)
+      profiles = localStorageData[0]
+      console.log(profiles)
 
       profiles.forEach((profile) => {
         if (profile.username === this.username) {
           if (profile.password === this.password) {
             profile.isLogged = true
 
-            profiles = JSON.stringify(profiles)
-            localStorage.setItem('profiles', profiles)
+            localStorageData[0] = profiles
+            localStorageData = JSON.stringify(localStorageData)
+            localStorage.setItem('data', localStorageData)
 
             this.isLogged = true;
           } 

@@ -87,30 +87,33 @@ export default {
   data() {
     return {
       isLogged: this.loggedProfile(),
-      storedData: [[], []]
-          
+      storedData: [[], []],
     };
   },
   methods: {
     loggedProfile() {
+      let localStorageData = JSON.parse(localStorage.getItem("data"))
       profiles =
-        JSON.parse(localStorage.getItem("data")) === null
+        localStorageData === null
           ? profiles
-          : JSON.parse(localStorage.getItem("data"))[0];
+          : localStorageData[0];
 
       return profiles.some((profile) => profile.isLogged);
     },
     logout() {
+      let localStorageData = JSON.parse(localStorage.getItem("data"))
       profiles =
-        JSON.parse(localStorage.getItem("data")) === null
+        localStorageData === null
           ? profiles
-          : JSON.parse(localStorage.getItem("data"))[0];
+          : localStorageData[0];
 
       profiles.forEach((profile) => {
         profile.isLogged = false;
       });
-      profiles = JSON.stringify(profiles);
-      localStorage.setItem("profiles", profiles);
+
+      localStorageData[0] = profiles 
+      localStorageData = JSON.stringify(localStorageData)
+      localStorage.setItem("data", localStorageData);
 
       this.isLogged = false;
 

@@ -12,9 +12,6 @@
 import tasks from '@/tasks.json'
 
 export default {
-    created () {
-        
-    },
     data () {
         return {
             taskName: '',
