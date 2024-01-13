@@ -6,7 +6,7 @@
       type="password"
       :placeholder="passwordPlaceholder"
     />
-    <button @click.prevent.stop="loginProfile">
+    <button @click="loginProfile">
       Login
     </button>
   </form>
@@ -36,9 +36,7 @@ export default {
   methods: {
     loginProfile() {
       let localStorageData = JSON.parse(localStorage.getItem('data'))
-      console.log(localStorageData)
       profiles = localStorageData[0]
-      console.log(profiles)
 
       profiles.forEach((profile) => {
         if (profile.username === this.username) {

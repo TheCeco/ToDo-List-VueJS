@@ -12,7 +12,7 @@
       type="password"
       :placeholder="rePasswordPlaceholder"
     />
-    <button @click.prevent.stop="registerProfile">
+    <button @click="registerProfile">
       Register
     </button>
   </form>

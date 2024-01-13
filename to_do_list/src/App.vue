@@ -117,7 +117,7 @@ export default {
 
       this.isLogged = false;
 
-      console.log("logged out");
+      location.reload()
     },
   },
 };
