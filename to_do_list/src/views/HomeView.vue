@@ -3,19 +3,19 @@
     <div id="search">
       <table>
         <tr>
-          <th>Task &num</th>
+          <th>Task num</th>
           <th>Task Name</th>
           <th>Description</th>
           <th>Done</th>
         </tr>
-        <tr v-for="task in this.tasks" :key="task.id">
-          <template v-if="task.user_id === this.loggedProfile.id">
-            <td>{{ task.id }}</td>
+        <template v-for="(task, index) in this.tasks" :key="task.id" :index="index">
+          <tr v-if="task.user_id === this.loggedProfile.id && !task.done">
+            <td>{{ index }}</td>
             <td>{{ task.task_name }}</td>
             <td>{{ task.description }}</td>
             <td><input type="checkbox" v-model="task.done"></td>
-          </template>
-        </tr>
+          </tr>
+        </template>
       </table>
     </div>
   </div>
@@ -49,27 +49,19 @@ export default {
       this.$router.push('/')
     }
   },
+  props: ['loggedProfile'],
   data() {
     return {
-      loggedProfile: this.getLoggedProfile(),
-      tasks: tasks,
-      localStorageData: JSON.parse(localStorage.getItem('data'))
+      tasks: this.getTasks()
     }
   },
   methods: {
-    getLoggedProfile() {
-      let localStorageData = JSON.parse(localStorage.getItem('data'))
-      profiles = localStorageData[0]
-
-      this.loggedProfile = {}
-
-      profiles.forEach(profile => {
-        if (profile.isLogged) {
-          this.loggedProfile = profile
-        }
-      })
-      return this.loggedProfile
-    },
+    getTasks() {
+      let updatedTasks = JSON.parse(localStorage.getItem("data"))[1].length === 0
+        ? tasks
+        : JSON.parse(localStorage.getItem("data"))[1];
+      return updatedTasks
+    }
   }
 }
 </script>

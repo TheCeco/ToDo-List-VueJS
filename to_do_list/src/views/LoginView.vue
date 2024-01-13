@@ -46,8 +46,6 @@ export default {
             localStorageData[0] = profiles
             localStorageData = JSON.stringify(localStorageData)
             localStorage.setItem('data', localStorageData)
-
-            this.isLogged = true;
           } 
         } 
       });

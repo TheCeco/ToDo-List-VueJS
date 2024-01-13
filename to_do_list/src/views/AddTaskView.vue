@@ -5,24 +5,50 @@
         <button @click="addTask">
             Add task
         </button>
-    </form> 
+    </form>
 </template>
 
 <script>
 import tasks from '@/tasks.json'
 
 export default {
-    data () {
+    created() {
+        if (!this.loggedProfile.isLogged) {
+            this.$router.push('/')
+        }
+    },
+    props: ['loggedProfile'],
+    data() {
         return {
             taskName: '',
             description: '',
             taskNamePlaceholder: 'Task Name...',
-            descriptionPlaceholder: 'Description...'
+            descriptionPlaceholder: 'Description...',
+            tasks: this.getTasks()
         }
     },
     methods: {
-        addTask () {
-            console.log('work')
+        getTasks() {
+            let updatedTasks = JSON.parse(localStorage.getItem("data"))[1].length === 0
+                ? tasks
+                : JSON.parse(localStorage.getItem("data"))[1];
+            return updatedTasks
+        },
+        addTask() {
+            const newTask = {
+                id: this.tasks.length + 1,
+                task_name: this.taskName,
+                description: this.description,
+                user_id: this.loggedProfile.id,
+                done: false
+            }
+
+            this.tasks.push(newTask)
+            let localStorageData = JSON.parse(localStorage.getItem('data'))
+            localStorageData[1] = this.tasks
+            localStorageData = JSON.stringify(localStorageData)
+            localStorage.setItem('data', localStorageData)
+
         }
     }
 }

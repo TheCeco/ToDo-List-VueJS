@@ -1,13 +1,14 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/add_task" v-if="isLogged">Add task</router-link>
-    <router-link to="/login" v-if="!isLogged">Login</router-link>
+    <router-link to="/add_task" v-if="this.loggedProfile.isLogged">Add task</router-link>
+    <router-link to="/login" v-if="!this.loggedProfile.isLogged">Login</router-link>
     |
-    <router-link to="/register" v-if="!isLogged">Register</router-link>
-    <router-link to="" @click="logout" v-if="isLogged">Log out</router-link>
+    <router-link to="/register" v-if="!this.loggedProfile.isLogged">Register</router-link>
+    <router-link to="" @click="logout" v-if="this.loggedProfile.isLogged">Log out</router-link>
   </nav>
-  <router-view></router-view>
+  <router-view 
+  :loggedProfile="this.loggedProfile"></router-view>
 </template>
 
 <style>
@@ -63,6 +64,7 @@ button {
 <script>
 import profiles from "@/profiles.json";
 import tasks from "@/tasks.json"
+import HomeView from "./views/HomeView.vue";
 
 export default {
   created() {
@@ -84,21 +86,32 @@ export default {
     }
     profiles = JSON.parse(localStorage.getItem("data"))[0];
   },
+  components: {
+    HomeView
+  },
   data() {
     return {
-      isLogged: this.loggedProfile(),
+      loggedProfile: this.getLoggedProfile(),
       storedData: [[], []],
     };
   },
   methods: {
-    loggedProfile() {
+    getLoggedProfile() {
       let localStorageData = JSON.parse(localStorage.getItem("data"))
       profiles =
         localStorageData === null
           ? profiles
           : localStorageData[0];
 
-      return profiles.some((profile) => profile.isLogged);
+      let loggedProfile = '';
+
+      profiles.forEach(profile => {
+        if (profile.isLogged) {
+          loggedProfile = profile
+        }
+      })
+
+      return loggedProfile
     },
     logout() {
       let localStorageData = JSON.parse(localStorage.getItem("data"))
@@ -114,8 +127,6 @@ export default {
       localStorageData[0] = profiles 
       localStorageData = JSON.stringify(localStorageData)
       localStorage.setItem("data", localStorageData);
-
-      this.isLogged = false;
 
       location.reload()
     },
