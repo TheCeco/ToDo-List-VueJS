@@ -1,14 +1,17 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/add_task" v-if="this.loggedProfile.isLogged">Add task</router-link>
-    <router-link to="/login" v-if="!this.loggedProfile.isLogged">Login</router-link>
-    |
-    <router-link to="/register" v-if="!this.loggedProfile.isLogged">Register</router-link>
-    <router-link to="" @click="logout" v-if="this.loggedProfile.isLogged">Log out</router-link>
-  </nav>
-  <router-view 
-  :loggedProfile="this.loggedProfile"></router-view>
+    <nav>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/add_task" v-if="this.loggedProfile.isLogged">Add Task</router-link>
+      <span v-if="this.loggedProfile.isLogged"> | </span>
+      <router-link to="/done_tasks" v-if="this.loggedProfile.isLogged">Done Tasks</router-link>
+      <router-link to="/login" v-if="!this.loggedProfile.isLogged">Login</router-link>
+      |
+      <router-link to="/register" v-if="!this.loggedProfile.isLogged">Register</router-link>
+      <router-link to="" @click="logout" v-if="this.loggedProfile.isLogged">Log out</router-link>
+    </nav>
+  <div class="home">
+    <router-view :loggedProfile="this.loggedProfile"></router-view>
+  </div>
 </template>
 
 <style>
@@ -40,8 +43,6 @@ li {
 form {
   display: grid;
   width: 50%;
-  left: 50%;
-  transform: translate(50%);
 }
 
 input,
@@ -63,7 +64,6 @@ button {
 
 <script>
 import profiles from "@/profiles.json";
-import tasks from "@/tasks.json"
 import HomeView from "./views/HomeView.vue";
 
 export default {
@@ -124,7 +124,7 @@ export default {
         profile.isLogged = false;
       });
 
-      localStorageData[0] = profiles 
+      localStorageData[0] = profiles
       localStorageData = JSON.stringify(localStorageData)
       localStorage.setItem("data", localStorageData);
 

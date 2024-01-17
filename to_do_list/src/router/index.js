@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import LoginView from '@/views/LoginView.vue'
 import AddTaskView from '@/views/AddTaskView.vue'
+import DoneTasksView from '@/views/DoneTasksView.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/add_task',
     name: 'add_task',
     component: AddTaskView
+  },
+  {
+    path: '/done_tasks',
+    name: 'done_tasks',
+    component: DoneTasksView
   }
 ]
 

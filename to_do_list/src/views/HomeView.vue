@@ -1,24 +1,23 @@
 <template>
-  <div class="home">
-    <div id="search">
-      <table>
-        <tr>
-          <th>Task num</th>
-          <th>Task Name</th>
-          <th>Description</th>
-          <th>Done</th>
-        </tr>
-        <template v-for="task in this.tasks" :key="task.id">
-          <tr v-if="task.user_id === this.loggedProfile.id && !task.done">
-            <td>{{ task.id }}</td>
-            <td>{{ task.task_name }}</td>
-            <td>{{ task.description }}</td>
-            <td><input type="checkbox" v-model="task.done" @click="this.markDone(task.id)"></td>
-          </tr>
-        </template>
-      </table>
-    </div>
-  </div>
+  <table v-if="this.loggedProfile.isLogged">
+    <tr>
+      <th>Task num</th>
+      <th>Task Name</th>
+      <th>Description</th>
+      <th>Done</th>
+    </tr>
+    <template v-for="task in this.tasks" :key="task.id">
+      <tr v-if="task.user_id === this.loggedProfile.id && !task.done">
+        <td>{{ task.id }}</td>
+        <td>{{ task.task_name }}</td>
+        <td>{{ task.description }}</td>
+        <td><input type="checkbox" v-model="task.done" @click="this.markDone(task.id)"></td>
+      </tr>
+    </template>
+  </table>
+  <h1 v-else>
+    You must be signed in!
+  </h1>
 </template>
 
 <style>
