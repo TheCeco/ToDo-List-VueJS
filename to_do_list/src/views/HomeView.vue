@@ -1,38 +1,21 @@
 <template>
-  <table v-if="this.loggedProfile.isLogged">
-    <tr>
-      <th>Task num</th>
-      <th>Task Name</th>
-      <th>Description</th>
-      <th>Done</th>
-    </tr>
+  <ol v-if="this.loggedProfile.isLogged" class="task-container">
     <template v-for="task in this.tasks" :key="task.id">
-      <tr v-if="task.user_id === this.loggedProfile.id && !task.done">
-        <td>{{ task.id }}</td>
-        <td>{{ task.task_name }}</td>
-        <td>{{ task.description }}</td>
-        <td><input type="checkbox" v-model="task.done" @click="this.markDone(task.id)"></td>
-      </tr>
+      <li v-if="task.user_id === this.loggedProfile.id && !task.done" class="task">
+        <div class="task-info">
+          <p @click="this.toggleDescription" class="task-name">
+            <span class="task-number">{{ task.id }}</span>{{ task.task_name }}
+            <input type="checkbox" v-model="task.done" @click="this.markDone(task.id)" class="done-task star-checkbox">
+          </p>
+        </div>
+        <p v-if="this.showDescription">{{ task.description }}</p>
+      </li>
     </template>
-  </table>
+  </ol>
   <h1 v-else>
     You must be signed in!
   </h1>
 </template>
-
-<style>
-table,
-th,
-td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 15px;
-}
-</style>
 
 <script>
 import profiles from '@/profiles.json'
@@ -51,7 +34,8 @@ export default {
   props: ['loggedProfile'],
   data() {
     return {
-      tasks: this.getTasks()
+      tasks: this.getTasks(),
+      showDescription: false
     }
   },
   methods: {
@@ -74,6 +58,10 @@ export default {
       localStorageData[1] = tasks
       localStorageData = JSON.stringify(localStorageData)
       localStorage.setItem('data', localStorageData)
+    },
+    toggleDescription() {
+      this.showDescription = !this.showDescription
+      return this.showDescription
     }
   }
 }
