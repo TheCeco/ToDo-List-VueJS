@@ -9,33 +9,64 @@
     border-radius: 2rem
     box-shadow: 0px 0px 20px 10px lightgray
     width: 70dvh
-    height: 85dvh
+    max-height: 85dvh
     position: absolute
     left: 50%
     top: 50%
     transform: translate(-50%, -50%)
 
 nav
+    display: flex
+    justify-content: center
+    column-gap: 1vh
     padding: 30px
 
 nav a 
+    text-decoration: none
     font-weight: bold
     color: #2c3e50
 
+nav a:hover
+    text-decoration: underline
+    cursor: pointer
+
 nav a.router-link-exact-active 
-    color: #42b983
+    color: #ffd700
 
 li
     list-style-type: none
 
-form
-    display: grid
-    width: 50%
+input, textarea, button
+    font-family: 'Comic Sans MS', Tahoma, Geneva, Verdana, sans-serif
+    border: 2px solid black
+    border-radius: 10px
 
-input,
 button
-    padding: 5px
-    margin: 5px
+    background: #ffa095
+
+button:hover
+    cursor: pointer
+    background: linear-gradient(45deg, #73e6ff, #ffa095)
+
+form
+    display: flex
+    flex-direction: column
+    row-gap: 10px
+    align-items: center
+    position: relative
+    align-items: center
+    margin: 45px
+    margin-top: 0px
+
+form input, form textarea, form button 
+    padding: 10px
+    margin: 0px
+
+form input, form textarea
+    width: 300px
+
+form button
+    width: 150px
 
 #loginRegister
     display: inline
@@ -48,6 +79,7 @@ button
 .header
     display: flex
     align-items: center
+    justify-content: center
 
 .dot
     background-color: #73e6ff
@@ -74,12 +106,13 @@ button
     pointer-events: none
     content: "\2605"
 
-.task-name
+.task-info
     background: pink
     padding: 2dvh
-    text-decoration: underline
-    text-decoration-style: dotted
     font-size: 20px
+    display: flex
+    justify-content: space-between
+    margin-block-end: 0px
 
 .task-container
     padding-inline-start: 0px
@@ -88,14 +121,90 @@ button
     overflow-y: auto
 
 .task
-    width: auto
+    width: 400px
+    min-height: 56px
+
+ol:last-child
+    box-shadow: inset #fff 0px -20px 20px 0px
+
+.task:last-child
+    margin-bottom: 20px
+
+.task:hover
+    max-height: 400px
 
 .task-number
-    position: absolute
-    left: 12%
+    float: left
+
+.task-number:hover
+    cursor: default
+    pointer-events: none
 
 .done-task
-    position: absolute
-    right: 12%
+    float: right
 
-    
+.done-task:hover
+    cursor: pointer
+
+.task-name
+    text-decoration: underline dotted
+
+.task-name:hover
+    color: #32CD32
+    cursor: pointer
+    text-decoration-color: #32CD32
+
+.description
+    border: 1px solid lightpink
+    border-top: 0px
+    margin-block: 0px
+    padding: 15px
+    font-size: 15px
+    min-height: 22px
+    overflow-x: auto
+
+label
+    position: relative
+    align-self: flex-start
+
+#sign
+    display: flex
+    flex-direction: column
+    margin: 20px
+    margin-bottom: 50px
+
+#logout
+    color: #2c3e50
+
+.toast-enter-from
+    opacity: 0
+    transform: translateY(-15px)
+
+.toast-enter-to
+    opacity: 1
+    transform: translateY(0px)
+
+.toast-enter-active,
+.toast-leave-active
+    transition: all 0.9s ease
+
+.toast-leave-from
+    opacity: 1
+    transform: translateY(0px)
+
+.toast-leave-to
+    opacity: 0
+    transform: translateY(-15px)
+
+ol
+    padding: 0
+    margin: 0
+
+ol:last-child::after
+    content: ""
+    position: absolute
+    bottom: 0
+    left: 35px
+    height: 25px
+    width: 400px
+    background: linear-gradient(180deg, transparent, white)

@@ -1,7 +1,10 @@
 <template>
   <form>
-    <input type="text" v-model="username" :placeholder="usernamePlaceholder" />
+    <label for="login-username-input">{{this.usernameLabel}}</label>
+    <input id="login-username-input" type="text" v-model="username" :placeholder="usernamePlaceholder" />
+    <label for="login-password-input">{{this.passwordLabel}}</label>
     <input
+      id="login-password-input"
       v-model="password"
       type="password"
       :placeholder="passwordPlaceholder"
@@ -29,8 +32,10 @@ export default {
     return {
       username: "",
       password: "",
-      usernamePlaceholder: "Username",
-      passwordPlaceholder: "Password",
+      usernamePlaceholder: "Username...",
+      passwordPlaceholder: "Password...",
+      usernameLabel: "Username:",
+      passwordLabel: "Password:",
     };
   },
   methods: {

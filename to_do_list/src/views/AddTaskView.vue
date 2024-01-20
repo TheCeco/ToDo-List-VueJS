@@ -1,7 +1,9 @@
 <template>
     <form>
-        <input v-model="taskName" type="text" :placeholder="taskNamePlaceholder">
-        <textarea v-model="description" rows="4" :placeholder="descriptionPlaceholder"></textarea>
+        <label for="add-task-input">{{this.taskNameLabel}}</label>
+        <input v-model="taskName" type="text" :placeholder="taskNamePlaceholder" id="add-task-input">
+        <label for="add-task-textarea">{{this.descriptionLabel}}</label>
+        <textarea v-model="description" rows="4" :placeholder="descriptionPlaceholder" id="add-task-textarea"></textarea>
         <button @click="addTask">
             Add task
         </button>
@@ -23,7 +25,9 @@ export default {
             taskName: '',
             description: '',
             taskNamePlaceholder: 'Task Name...',
+            taskNameLabel: 'Task Name:',
             descriptionPlaceholder: 'Description...',
+            descriptionLabel: 'Description:',
             tasks: this.getTasks()
         }
     },

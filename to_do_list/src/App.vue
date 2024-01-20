@@ -7,7 +7,7 @@
     <router-link to="/login" v-if="!this.loggedProfile.isLogged">Login</router-link>
     |
     <router-link to="/register" v-if="!this.loggedProfile.isLogged">Register</router-link>
-    <router-link to=" " @click="logout" v-if="this.loggedProfile.isLogged">Log out</router-link>
+    <router-link id="logout" to="" @click="logout" v-if="this.loggedProfile.isLogged">Log out</router-link>
   </nav>
   <div class="home">
     <div class="header">

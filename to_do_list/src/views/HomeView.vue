@@ -1,17 +1,21 @@
 <template>
-  <ol v-if="this.loggedProfile.isLogged" class="task-container">
-    <template v-for="(task, index) in this.tasks" :key="task.id" :index="index">
-      <li class="task">
-        <p class="task-info">
-          <span class="task-number">{{ index + 1 }}.</span>
-        <div class="task-name" @click="toggleDescription(index + 1)">{{ task.task_name }}</div>
-        <input type="checkbox" v-model="task.done" @click="this.markDone(task.id)" class="done-task">
-        </p>
-        <p v-if="this.showDescription === index + 1" class="description">{{ task.description }}</p>
-      </li>
-    </template>
-  </ol>
-  <h1 v-else>
+  <template v-if="this.loggedProfile.isLogged" class="task-container">
+    <transition-group tag="ol" class="task-container">
+      <template v-for="(task, index) in this.tasks" :key="task.id" :index="index">
+        <li class="task">
+          <p class="task-info">
+            <span class="task-number">{{ index + 1 }}.</span>
+          <div class="task-name" @click="toggleDescription(index + 1)">{{ task.task_name }}</div>
+          <input type="checkbox" v-model="task.done" @click="this.markDone(task.id)" class="done-task">
+          </p>
+          <transition name="toast">
+            <p v-if="this.showDescription === index + 1" class="description">{{ task.description }}</p>
+          </transition>
+        </li>
+      </template>
+    </transition-group>
+  </template>
+  <h1 id="sign" v-else>
     You must be signed in!
   </h1>
 </template>
@@ -59,6 +63,7 @@ export default {
       localStorageData[1] = tasks
       localStorageData = JSON.stringify(localStorageData)
       localStorage.setItem('data', localStorageData)
+      this.tasks = this.getTasks()
     },
     toggleDescription(index) {
       if (this.showDescription === index) {

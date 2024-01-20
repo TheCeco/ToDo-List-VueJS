@@ -1,13 +1,19 @@
 <template>
   <form>
-    <input v-model="username" type="text" :placeholder="usernamePlaceholder" />
-    <input v-model="email" type="email" :placeholder="emailPlaceholder" />
+    <label for="register-username-input">{{this.usernameLabel}}</label>
+    <input id="register-username-input" v-model="username" type="text" :placeholder="usernamePlaceholder" />
+    <label for="register-email-input">{{this.emailLabel}}</label>
+    <input id="register-email-input" v-model="email" type="email" :placeholder="emailPlaceholder" />
+    <label for="register-password-input">{{this.passwordLabel}}</label>
     <input
+      id="regsiter-password-input"
       v-model="password"
       type="password"
       :placeholder="passwordPlaceholder"
     />
+    <label for="register-re-password-input">{{this.rePasswordLabel}}</label>
     <input
+      id="register-re-password-input"
       v-model="rePassword"
       type="password"
       :placeholder="rePasswordPlaceholder"
@@ -38,10 +44,14 @@ export default {
       password: '',
       rePassword: '',
       email: '',
-      usernamePlaceholder: 'Username',
-      emailPlaceholder: 'Email',
-      passwordPlaceholder: 'Password',
-      rePasswordPlaceholder: 'Repeat Password',
+      usernamePlaceholder: 'Username...',
+      emailPlaceholder: 'Email...',
+      passwordPlaceholder: 'Password...',
+      rePasswordPlaceholder: 'Repeat Password...',
+      usernameLabel: 'Username:',
+      emailLabel: 'Email:',
+      passwordLabel: 'Password:',
+      rePasswordLabel: 'Repeat Password:',
     }
   },
   methods: {
