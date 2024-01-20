@@ -1,14 +1,13 @@
 <template>
   <ol v-if="this.loggedProfile.isLogged" class="task-container">
-    <template v-for="task in this.tasks" :key="task.id">
-      <li v-if="task.user_id === this.loggedProfile.id && !task.done" class="task">
-        <div class="task-info">
-          <p @click="this.toggleDescription" class="task-name">
-            <span class="task-number">{{ task.id }}</span>{{ task.task_name }}
-            <input type="checkbox" v-model="task.done" @click="this.markDone(task.id)" class="done-task star-checkbox">
-          </p>
-        </div>
-        <p v-if="this.showDescription">{{ task.description }}</p>
+    <template v-for="(task, index) in this.tasks" :key="task.id" :index="index">
+      <li class="task">
+        <p class="task-info">
+          <span class="task-number">{{ index + 1 }}.</span>
+        <div class="task-name" @click="toggleDescription(index + 1)">{{ task.task_name }}</div>
+        <input type="checkbox" v-model="task.done" @click="this.markDone(task.id)" class="done-task">
+        </p>
+        <p v-if="this.showDescription === index + 1" class="description">{{ task.description }}</p>
       </li>
     </template>
   </ol>
@@ -35,7 +34,7 @@ export default {
   data() {
     return {
       tasks: this.getTasks(),
-      showDescription: false
+      showDescription: 0
     }
   },
   methods: {
@@ -43,6 +42,8 @@ export default {
       let updatedTasks = JSON.parse(localStorage.getItem("data"))[1].length === 0
         ? tasks
         : JSON.parse(localStorage.getItem("data"))[1];
+
+      updatedTasks = updatedTasks.filter(task => task.user_id === this.loggedProfile.id && !task.done)
       return updatedTasks
     },
     markDone(id) {
@@ -59,8 +60,13 @@ export default {
       localStorageData = JSON.stringify(localStorageData)
       localStorage.setItem('data', localStorageData)
     },
-    toggleDescription() {
-      this.showDescription = !this.showDescription
+    toggleDescription(index) {
+      if (this.showDescription === index) {
+        this.showDescription = 0
+        return this.showDescription
+      }
+
+      this.showDescription = index
       return this.showDescription
     }
   }
