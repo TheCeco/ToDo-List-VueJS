@@ -1,18 +1,16 @@
 <template>
   <template v-if="this.loggedProfile.isLogged" class="task-container">
-    <transition-group tag="ol" class="task-container">
-      <template v-for="(task, index) in this.tasks" :key="task.id" :index="index">
-        <li class="task">
-          <p class="task-info">
-            <span class="task-number">{{ index + 1 }}.</span>
-          <div class="task-name" @click="toggleDescription(index + 1)">{{ task.task_name }}</div>
-          <input type="checkbox" v-model="task.done" @click="this.markDone(task.id)" class="done-task">
-          </p>
-          <transition name="toast">
-            <p v-if="this.showDescription === index + 1" class="description">{{ task.description }}</p>
-          </transition>
-        </li>
-      </template>
+    <transition-group tag="ol" class="task-container" name="list" appear>
+      <li class="task" v-for="(task, index) in this.tasks" :key="task.id" :index="index">
+        <p class="task-info">
+          <span class="task-number">{{ index + 1 }}.</span>
+        <div class="task-name" @click="toggleDescription(index + 1)">{{ task.task_name }}</div>
+        <input type="checkbox" v-model="task.done" @click="this.markDone(task.id)" class="done-task">
+        </p>
+        <transition name="toast">
+          <p v-if="this.showDescription === index + 1" class="description">{{ task.description }}</p>
+        </transition>
+      </li>
     </transition-group>
   </template>
   <h1 id="sign" v-else>
