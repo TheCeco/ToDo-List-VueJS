@@ -1,23 +1,13 @@
 <template>
   <form>
-    <label for="register-username-input">{{this.usernameLabel}}</label>
+    <label for="register-username-input">{{ this.usernameLabel }}</label>
     <input id="register-username-input" v-model="username" type="text" :placeholder="usernamePlaceholder" />
-    <label for="register-email-input">{{this.emailLabel}}</label>
+    <label for="register-email-input">{{ this.emailLabel }}</label>
     <input id="register-email-input" v-model="email" type="email" :placeholder="emailPlaceholder" />
-    <label for="register-password-input">{{this.passwordLabel}}</label>
-    <input
-      id="regsiter-password-input"
-      v-model="password"
-      type="password"
-      :placeholder="passwordPlaceholder"
-    />
-    <label for="register-re-password-input">{{this.rePasswordLabel}}</label>
-    <input
-      id="register-re-password-input"
-      v-model="rePassword"
-      type="password"
-      :placeholder="rePasswordPlaceholder"
-    />
+    <label for="register-password-input">{{ this.passwordLabel }}</label>
+    <input id="regsiter-password-input" v-model="password" type="password" :placeholder="passwordPlaceholder" />
+    <label for="register-re-password-input">{{ this.rePasswordLabel }}</label>
+    <input id="register-re-password-input" v-model="rePassword" type="password" :placeholder="rePasswordPlaceholder" />
     <button @click="registerProfile">
       Register
     </button>
@@ -30,15 +20,15 @@ import { Profile } from '@/Profile.js'
 
 export default {
   name: 'RegisterView',
-  created () {
+  created() {
     let localStorageData = JSON.parse(localStorage.getItem('data'))
     profiles = localStorageData[0]
-    
+
     if (profiles.some(profile => profile.isLogged)) {
       this.$router.push('/')
     }
   },
-  data () {
+  data() {
     return {
       username: '',
       password: '',
@@ -55,7 +45,7 @@ export default {
     }
   },
   methods: {
-    registerProfile () {
+    registerProfile() {
       let localStorageData = JSON.parse(localStorage.getItem('data'))
       profiles = localStorageData[0]
 
@@ -75,7 +65,7 @@ export default {
         )
 
         profiles.push(profile)
-        
+
         localStorageData[0] = profiles
         localStorageData = JSON.stringify(localStorageData)
         localStorage.setItem('data', localStorageData)

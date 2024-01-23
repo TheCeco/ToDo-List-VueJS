@@ -1,8 +1,8 @@
 <template>
     <form>
-        <label for="add-task-input">{{this.taskNameLabel}}</label>
+        <label for="add-task-input">{{ this.taskNameLabel }}</label>
         <input v-model="taskName" type="text" :placeholder="taskNamePlaceholder" id="add-task-input">
-        <label for="add-task-textarea">{{this.descriptionLabel}}</label>
+        <label for="add-task-textarea">{{ this.descriptionLabel }}</label>
         <textarea v-model="description" rows="4" :placeholder="descriptionPlaceholder" id="add-task-textarea"></textarea>
         <button @click="addTask">
             Add task

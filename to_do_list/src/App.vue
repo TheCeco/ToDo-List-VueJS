@@ -50,7 +50,6 @@ export default {
     return {
       loggedProfile: this.getLoggedProfile(),
       storedData: [[], []],
-      // localStorageData: console.log(JSON.parse(localStorage.getItem('data'))),
     };
   },
   methods: {

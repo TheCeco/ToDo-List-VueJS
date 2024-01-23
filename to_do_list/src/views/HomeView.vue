@@ -1,19 +1,24 @@
 <template>
   <template v-if="this.loggedProfile.isLogged" class="task-container">
-    <transition-group tag="ol" class="task-container" name="list" appear>
-      <li class="task" v-for="(task, index) in this.tasks" :key="task.id" :index="index">
-        <p class="task-info">
-          <span class="task-number">{{ index + 1 }}.</span>
-        <div class="task-name" @click="toggleDescription(index + 1)">{{ task.task_name }}</div>
-        <input type="checkbox" v-model="task.done" @click="this.markDone(task.id)" class="done-task">
-        </p>
-        <transition name="toast">
-          <p v-if="this.showDescription === index + 1" class="description">{{ task.description }}</p>
-        </transition>
-      </li>
-    </transition-group>
+    <transition name="switch" mode="out-in">
+      <transition-group v-if="this.tasks.length > 0" tag="ol" class="task-container" name="list" appear>
+        <li class="task" v-for="(task, index) in this.tasks" :key="task.id" :index="index">
+          <p class="task-info">
+            <span class="task-number">{{ index + 1 }}.</span>
+          <div class="task-name" @click="toggleDescription(index + 1)">{{ task.task_name }}</div>
+          <input type="checkbox" v-model="task.done" @click="this.markDone(task.id)" class="done-task">
+          </p>
+          <transition name="toast">
+            <p v-if="this.showDescription === index + 1" class="description">{{ task.description }}</p>
+          </transition>
+        </li>
+      </transition-group>
+      <h1 class="sign" v-else>
+        No tasks left to do!
+      </h1>
+    </transition>
   </template>
-  <h1 id="sign" v-else>
+  <h1 class="sign" v-else>
     You must be signed in!
   </h1>
 </template>
@@ -50,7 +55,7 @@ export default {
     },
     markDone(id) {
       let localStorageData = JSON.parse(localStorage.getItem('data'))
-      tasks = localStorageData[1]
+      tasks = localStorageData[1].length === 0 ? tasks : localStorageData[1]
 
       tasks.forEach(task => {
         if (task.id === id) {
